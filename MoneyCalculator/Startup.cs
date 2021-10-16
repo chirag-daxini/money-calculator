@@ -38,7 +38,7 @@ namespace MoneyCalculator
                     {
                         var monies = _moneyStorage.Get();
                         var result = _moneyCalculator.SumPerCurrency(monies);
-                        Console.WriteLine($"SumPerCurrency is {string.Join(',', Enumerable.Select(monies, x => x))}");
+                        Console.WriteLine($"SumPerCurrency is {string.Join(',', Enumerable.Select(result, x => x))}");
                     }
                     break;
                 default:
