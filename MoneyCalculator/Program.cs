@@ -25,6 +25,9 @@ namespace MoneyCalculator
                 {
                     services.AddHostedService<Startup>();
                     services.AddScoped<IMoneyCalculator, MoneyCalculatorService>();
+                    services.AddSingleton<IMoneyStorageService, MoneyStorageService>();
+                    services.AddSingleton<ICurrencyStorageService, CurrencyStorageService>();
+
                 }).ConfigureAppConfiguration(builder =>
                 {
                     builder.Sources.Clear();

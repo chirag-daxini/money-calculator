@@ -1,6 +1,8 @@
-﻿using MoneyCalculator.Models.Interfaces;
+﻿using MoneyCalculator.Models;
+using MoneyCalculator.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MoneyCalculator.Domain
 {
@@ -31,12 +33,19 @@ namespace MoneyCalculator.Domain
         }
         public IMoney Max(IEnumerable<IMoney> monies)
         {
-            throw new NotImplementedException();
+            if (!IsAllCurrencySame(monies))
+                throw new ArgumentException("All monies are not in the same currency");
+
+            return monies.OrderByDescending(x => x.Amount).First();
         }
 
         public IEnumerable<IMoney> SumPerCurrency(IEnumerable<IMoney> monies)
         {
-            throw new NotImplementedException();
+            return monies.GroupBy(x => x.Currency).Select(a => new Money() { Currency = a.Key, Amount = a.Sum(x => x.Amount) });
+        }
+        private bool IsAllCurrencySame(IEnumerable<IMoney> monies)
+        {
+            return monies.All(x => x.Currency == monies.First().Currency);
         }
     }
 }
