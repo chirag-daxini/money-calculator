@@ -32,7 +32,7 @@ namespace MoneyCalculator.Tests
 
         #region Max
         [TestMethod]
-        public void Should_throw_Exception_in_case_Of_different_Monies()
+        public void Should_throw_Exception_in_case_Of_different_monies()
         {
             //Act
             var exception = Assert.ThrowsException<ArgumentException>(() => _moneyCalculator.Max(_differentMonies));
@@ -41,7 +41,7 @@ namespace MoneyCalculator.Tests
             Assert.AreEqual(exception.Message, "All monies are not in the same currency");
         }
         [TestMethod]
-        public void Should_return_maximum_money_in_case_of_same_Currency()
+        public void Should_return_maximum_money_in_case_of_same_currency()
         {
             //Arrange
             var preparedResult = _sameCurrencyMonies.OrderByDescending(x => x.Amount).First();
@@ -66,6 +66,14 @@ namespace MoneyCalculator.Tests
             Assert.AreEqual(exception.GetType(), typeof(InvalidOperationException));
 
         }
+        [TestMethod]
+        public void Should_throw_exception_if_null_collection()
+        {
+            //Act
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => _moneyCalculator.Max(null));
+
+            Assert.AreEqual(exception.GetType(), typeof(ArgumentNullException));
+        }
         #endregion
 
         #region SumByCurrencies
@@ -81,6 +89,26 @@ namespace MoneyCalculator.Tests
             //Assert
             Assert.IsTrue(result.Count() > 0);
             Assert.AreEqual(result.First().ToString(), expectedResult.First().ToString());
+        }
+        [TestMethod]
+        public void Should_return_empty_collection_if_collection_is_empty()
+        {
+            //Arrange
+            var emptyCollection = new List<Money>();
+
+            //Act
+            var result = _moneyCalculator.SumPerCurrency(emptyCollection);
+
+            //Assert
+            Assert.IsTrue(result.Count() == 0);
+        }
+        [TestMethod]
+        public void Should_throw_exception_if_null_collection_data()
+        {
+            //Act
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => _moneyCalculator.SumPerCurrency(null));
+
+            Assert.AreEqual(exception.GetType(), typeof(ArgumentNullException));
         }
         #endregion
     }
